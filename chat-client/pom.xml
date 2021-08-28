@@ -52,7 +52,7 @@
 				<version>1.0.4</version>
 				<configuration>
 					<mainClass>com.iridiumbyte.poc.chat.client.ChatApplication</mainClass>
-					<graalvmHome>/home/mnowicki/graalvm</graalvmHome>
+					<graalvmHome>${java.home}</graalvmHome>
 				</configuration>
 			</plugin>
 		</plugins>
