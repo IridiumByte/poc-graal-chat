@@ -2,6 +2,7 @@ package com.iridiumbyte.poc.chat.server.message;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.iridiumbyte.poc.chat.server.util.GsonFactory;
 import com.iridiumbyte.poc.chat.server.util.GsonOffsetDateTimeConverter;
 
 import javax.websocket.EncodeException;
@@ -11,9 +12,10 @@ import java.time.OffsetDateTime;
 
 public class MessageEncoder implements Encoder.Text<Message> {
 
-	private final Gson gson = new GsonBuilder()
-			.registerTypeAdapter(OffsetDateTime.class, new GsonOffsetDateTimeConverter())
-			.create();
+	private final Gson gson = GsonFactory.defaultGson();
+
+	public MessageEncoder() {
+	}
 
 	@Override
 	public void init(EndpointConfig config) {

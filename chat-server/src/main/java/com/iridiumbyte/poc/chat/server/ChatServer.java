@@ -10,6 +10,8 @@ import com.iridiumbyte.poc.chat.server.user.ActiveUserDao;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
 import com.iridiumbyte.poc.chat.server.user.ChatUser.Username;
 
+import static com.iridiumbyte.poc.chat.server.message.MessageFactory.serverMessage;
+
 public class ChatServer {
 
 	private final ActiveChannelDao activeChannels;
@@ -22,6 +24,7 @@ public class ChatServer {
 
 	public void join(ChatUser chatUser) {
 		activeUsers.save(chatUser);
+		chatUser.sendMessage(serverMessage("Connected as " + chatUser.getUsername()));
 	}
 
 	public void join(Username username, Channel.Id channelId) {
@@ -33,7 +36,7 @@ public class ChatServer {
 
 	public void sendMessage(Username username, MessageDto incoming) {
 		Message message = MessageFactory.from(incoming, username);
-		activeChannels.findById(message.channelId)
+		activeChannels.findById(message.getChannelId())
 				.orElseThrow()
 				.sendPublicMessage(message);
 	}

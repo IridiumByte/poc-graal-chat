@@ -10,12 +10,28 @@ public class MessageFactory {
 		return new Message(
 				author.toString(),
 				extractChannelId(messageDto),
-				messageDto.content
+				messageDto.getContent()
 		);
 	}
 
 	public static Channel.Id extractChannelId(MessageDto messageDto) {
-		return new Channel.Id(messageDto.target, messageDto.channelType);
+		return new Channel.Id(messageDto.getTarget(), messageDto.getChannelType());
+	}
+
+	public static Message serverMessage(String message) {
+		return new Message(
+				"SERVER",
+				null,
+				message
+		);
+	}
+
+	public static Message serverMessage(String message, Channel.Id channelId) {
+		return new Message(
+				"SERVER",
+				channelId,
+				message
+		);
 	}
 
 }

@@ -57,9 +57,11 @@ public class ChatEndpoint {
 	public void onMessage(Session session, String message) {
 		MessageDto incoming = gson.fromJson(message, MessageDto.class);
 		Username username = extractUsername(session);
-		if (incoming.messageType == MessageType.JOIN) {
+		if (incoming.getMessageType() == MessageType.JOIN) {
+			log.info("Joining room: {}", incoming);
 			chatServer.join(username, extractChannelId(incoming));
 		} else {
+			log.info("Sending message to room: {}", incoming);
 			chatServer.sendMessage(username, incoming);
 		}
 	}

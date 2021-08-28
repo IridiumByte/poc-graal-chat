@@ -1,0 +1,19 @@
+[
+  {
+    "name" : "com.iridiumbyte.poc.chat.server.ServerHandshakeConfigurator",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true
+  },
+  {
+    "name" : "com.iridiumbyte.poc.chat.api.MessageDto",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allPublicFields": true
+  },
+  {
+    "name" : "com.iridiumbyte.poc.chat.server.message.Message",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allPublicFields": true
+  }
+]

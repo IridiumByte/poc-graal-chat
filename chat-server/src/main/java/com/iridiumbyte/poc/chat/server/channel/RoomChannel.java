@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.iridiumbyte.poc.chat.server.message.MessageFactory.serverMessage;
+
 public class RoomChannel implements Channel {
 
 	private final Channel.Id id;
@@ -25,22 +27,18 @@ public class RoomChannel implements Channel {
 	@Override
 	public void join(ChatUser chatUser) {
 		connectedUsers.add(chatUser);
-		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " joined to room " + id.channelName));
+		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " joined to room " + id.channelName, id));
 	}
 
 	@Override
 	public void disconnect(ChatUser chatUser) {
 		connectedUsers.remove(chatUser);
-		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " left room " + id.channelName));
+		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " left room " + id.channelName, id));
 	}
 
 	@Override
 	public void sendPublicMessage(Message message) {
 		connectedUsers.forEach(user -> user.sendMessage(message));
-	}
-
-	private static Message serverMessage(String message) {
-		return new Message("SERVER", null, message);
 	}
 
 }
