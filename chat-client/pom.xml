@@ -51,7 +51,7 @@
 				<artifactId>gluonfx-maven-plugin</artifactId>
 				<version>1.0.4</version>
 				<configuration>
-					<mainClass>com.iridiumbyte.poc.chat.client.Runner</mainClass>
+					<mainClass>com.iridiumbyte.poc.chat.client.ChatApplication</mainClass>
 					<graalvmHome>/home/mnowicki/graalvm</graalvmHome>
 				</configuration>
 			</plugin>
