@@ -16,6 +16,14 @@
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-undertow-websockets</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.iridium-byte</groupId>
+			<artifactId>chat-api</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
