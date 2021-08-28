@@ -18,6 +18,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.iridium-byte</groupId>
+			<artifactId>chat-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
 			<version>1.5.2</version>
@@ -27,6 +31,31 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.32</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>11</version>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.gluonhq</groupId>
+				<artifactId>gluonfx-maven-plugin</artifactId>
+				<version>1.0.4</version>
+				<configuration>
+					<mainClass>com.iridiumbyte.poc.chat.client.Runner</mainClass>
+					<graalvmHome>/home/mnowicki/graalvm</graalvmHome>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
