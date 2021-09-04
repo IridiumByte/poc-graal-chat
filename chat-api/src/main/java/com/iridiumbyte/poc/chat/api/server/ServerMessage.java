@@ -1,19 +1,18 @@
-package com.iridiumbyte.poc.chat.server.message;
+package com.iridiumbyte.poc.chat.api.server;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.iridiumbyte.poc.chat.server.channel.Channel;
 
 import java.time.OffsetDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Message {
+public class ServerMessage {
 
 	public final String author;
 	public final String content;
-	public final Channel.Id channelId;
+	public final ChannelId channelId;
 	public final OffsetDateTime creationTime;
 
-	public Message(String author, Channel.Id channelId, String content) {
+	public ServerMessage(String author, ChannelId channelId, String content) {
 		this.author = author;
 		this.content = content;
 		this.channelId = channelId;

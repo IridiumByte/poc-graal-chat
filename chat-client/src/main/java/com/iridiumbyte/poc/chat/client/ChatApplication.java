@@ -1,6 +1,6 @@
 package com.iridiumbyte.poc.chat.client;
 
-import com.iridiumbyte.poc.chat.api.ChannelType;
+import com.iridiumbyte.poc.chat.api.client.ChannelType;
 import com.iridiumbyte.poc.chat.client.model.ChatRoom;
 import com.iridiumbyte.poc.chat.client.model.ViewModel;
 import javafx.application.Application;

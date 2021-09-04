@@ -1,8 +1,8 @@
 package com.iridiumbyte.poc.chat.client.client;
 
-import com.iridiumbyte.poc.chat.api.ChannelType;
-import com.iridiumbyte.poc.chat.api.MessageDto;
-import com.iridiumbyte.poc.chat.api.MessageType;
+import com.iridiumbyte.poc.chat.api.client.ChannelType;
+import com.iridiumbyte.poc.chat.api.client.ClientMessage;
+import com.iridiumbyte.poc.chat.api.client.MessageType;
 import com.iridiumbyte.poc.chat.client.socket.ChatWebSocketClient;
 import com.iridiumbyte.poc.chat.client.socket.MessageHandler;
 import org.slf4j.Logger;
@@ -24,12 +24,12 @@ public class ChatClient {
 	}
 
 	public void sendMessage(ChannelType type, String targetRoom, String content) {
-		MessageDto message = new MessageDto(type, MessageType.SEND, targetRoom, content);
+		ClientMessage message = new ClientMessage(type, MessageType.SEND, targetRoom, content);
 		// TODO: 28.08.2021 serialize and send
 	}
 
 	public void joinRoom(String targetRoom) {
-		MessageDto message = new MessageDto(ChannelType.ROOM, MessageType.JOIN, targetRoom, null);
+		ClientMessage message = new ClientMessage(ChannelType.ROOM, MessageType.JOIN, targetRoom, null);
 		// TODO: 28.08.2021 serialize and send
 	}
 

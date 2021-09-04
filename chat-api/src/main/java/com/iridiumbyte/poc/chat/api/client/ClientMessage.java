@@ -1,16 +1,16 @@
-package com.iridiumbyte.poc.chat.api;
+package com.iridiumbyte.poc.chat.api.client;
 
-public class MessageDto {
+public class ClientMessage {
 
 	public ChannelType channelType;
 	public MessageType messageType;
 	public String target;
 	public String content;
 
-	public MessageDto() { //TODO: gson to be removed
+	public ClientMessage() { //TODO: gson to be removed
 	}
 
-	public MessageDto(ChannelType channelType, MessageType messageType, String target, String content) {
+	public ClientMessage(ChannelType channelType, MessageType messageType, String target, String content) {
 		this.channelType = channelType;
 		this.messageType = messageType;
 		this.target = target;

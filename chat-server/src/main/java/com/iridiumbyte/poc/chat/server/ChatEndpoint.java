@@ -1,7 +1,7 @@
 package com.iridiumbyte.poc.chat.server;
 
-import com.iridiumbyte.poc.chat.api.MessageDto;
-import com.iridiumbyte.poc.chat.api.MessageType;
+import com.iridiumbyte.poc.chat.api.client.ClientMessage;
+import com.iridiumbyte.poc.chat.api.client.MessageType;
 import com.iridiumbyte.poc.chat.server.channel.InMemoryActiveChannelDao;
 import com.iridiumbyte.poc.chat.server.message.MessageDecoder;
 import com.iridiumbyte.poc.chat.server.message.MessageEncoder;
@@ -58,7 +58,7 @@ public class ChatEndpoint {
 	}
 
 	@OnMessage
-	public void onMessage(Session session, MessageDto message) {
+	public void onMessage(Session session, ClientMessage message) {
 		Username username = extractUsername(session);
 		if (message.getMessageType() == MessageType.JOIN) {
 			log.info("Joining room: {}", message);

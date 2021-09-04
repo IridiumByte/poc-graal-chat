@@ -1,9 +1,9 @@
 package com.iridiumbyte.poc.chat.client.socket;
 
-import com.iridiumbyte.poc.chat.api.MessageDto;
+import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 
 public interface MessageHandler {
 
-	void onMessage(MessageDto msg);
+	void onMessage(ClientMessage msg);
 
 }

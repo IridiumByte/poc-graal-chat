@@ -1,10 +1,11 @@
 package com.iridiumbyte.poc.chat.server.channel;
 
-import com.iridiumbyte.poc.chat.api.ChannelType;
+import com.iridiumbyte.poc.chat.api.client.ChannelType;
+import com.iridiumbyte.poc.chat.api.server.ChannelId;
 
 public class ChannelFactory {
 
-	public static Channel createNew(Channel.Id channelId) {
+	public static Channel createNew(ChannelId channelId) {
 		if (channelId.channelType == ChannelType.ROOM)
 			return new RoomChannel(channelId);
 		else

@@ -1,21 +1,20 @@
 package com.iridiumbyte.poc.chat.server.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iridiumbyte.poc.chat.api.MessageDto;
+import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import com.iridiumbyte.poc.chat.server.util.ExceptionUtil;
 import com.iridiumbyte.poc.chat.server.util.ObjectMapperFactory;
 
-import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
-public class MessageDecoder implements Decoder.Text<MessageDto> {
+public class MessageDecoder implements Decoder.Text<ClientMessage> {
 
 	private final ObjectMapper objectMapper = ObjectMapperFactory.defaultObjectMapper();
 
 	@Override
-	public MessageDto decode(String s) {
-		return ExceptionUtil.unchecked(() -> objectMapper.readValue(s, MessageDto.class));
+	public ClientMessage decode(String s) {
+		return ExceptionUtil.unchecked(() -> objectMapper.readValue(s, ClientMessage.class));
 	}
 
 	@Override

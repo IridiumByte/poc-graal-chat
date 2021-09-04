@@ -1,6 +1,6 @@
 package com.iridiumbyte.poc.chat.client.model;
 
-import com.iridiumbyte.poc.chat.api.ChannelType;
+import com.iridiumbyte.poc.chat.api.client.ChannelType;
 
 import java.util.ArrayList;
 import java.util.List;

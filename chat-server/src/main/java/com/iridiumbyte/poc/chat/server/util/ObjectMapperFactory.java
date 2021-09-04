@@ -12,7 +12,6 @@ public class ObjectMapperFactory {
 		return new ObjectMapper()
 				.registerModule(new JavaTimeModule())
 				.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//				.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.PUBLIC_ONLY);
 	}
 
 }

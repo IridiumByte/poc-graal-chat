@@ -1,14 +1,13 @@
 package com.iridiumbyte.poc.chat.client.socket;
 
-import com.iridiumbyte.poc.chat.api.ChannelType;
-import com.iridiumbyte.poc.chat.api.MessageDto;
+import com.iridiumbyte.poc.chat.api.client.ChannelType;
+import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -42,7 +41,7 @@ public class ChatWebSocketClient extends WebSocketClient {
 	@Override
 	public void onMessage(String msg) {
 		// TODO: 28.08.2021 deserialize
-		messageHandler.onMessage(new MessageDto(ChannelType.ROOM, null, "Room A", msg));
+		messageHandler.onMessage(new ClientMessage(ChannelType.ROOM, null, "Room A", msg));
 	}
 
 	@Override

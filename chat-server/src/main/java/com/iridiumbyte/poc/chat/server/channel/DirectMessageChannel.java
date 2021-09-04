@@ -1,15 +1,13 @@
 package com.iridiumbyte.poc.chat.server.channel;
 
-import com.iridiumbyte.poc.chat.server.message.Message;
+import com.iridiumbyte.poc.chat.api.server.ChannelId;
+import com.iridiumbyte.poc.chat.api.server.ServerMessage;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
 
 public class DirectMessageChannel implements Channel {
 
-	public DirectMessageChannel() {
-	}
-
 	@Override
-	public Id getId() {
+	public ChannelId getId() {
 		return null;
 	}
 
@@ -19,7 +17,7 @@ public class DirectMessageChannel implements Channel {
 	}
 
 	@Override
-	public void sendPublicMessage(Message message) {
+	public void sendPublicMessage(ServerMessage message) {
 
 	}
 

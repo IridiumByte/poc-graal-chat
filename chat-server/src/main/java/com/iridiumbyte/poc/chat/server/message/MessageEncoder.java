@@ -1,15 +1,15 @@
 package com.iridiumbyte.poc.chat.server.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iridiumbyte.poc.chat.api.server.ServerMessage;
 import com.iridiumbyte.poc.chat.server.util.ObjectMapperFactory;
 
-import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 import static com.iridiumbyte.poc.chat.server.util.ExceptionUtil.unchecked;
 
-public class MessageEncoder implements Encoder.Text<Message> {
+public class MessageEncoder implements Encoder.Text<ServerMessage> {
 
 	private final ObjectMapper objectMapper = ObjectMapperFactory.defaultObjectMapper();
 
@@ -25,7 +25,7 @@ public class MessageEncoder implements Encoder.Text<Message> {
 	}
 
 	@Override
-	public String encode(Message object) {
+	public String encode(ServerMessage object) {
 		return unchecked(() -> objectMapper.writeValueAsString(object));
 	}
 

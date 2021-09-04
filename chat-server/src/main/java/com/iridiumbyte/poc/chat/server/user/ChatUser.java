@@ -1,6 +1,6 @@
 package com.iridiumbyte.poc.chat.server.user;
 
-import com.iridiumbyte.poc.chat.server.message.Message;
+import com.iridiumbyte.poc.chat.api.server.ServerMessage;
 
 import javax.websocket.Session;
 import java.util.Objects;
@@ -17,7 +17,7 @@ public class ChatUser {
 		this.session = session;
 	}
 
-	public void sendMessage(Message message) {
+	public void sendMessage(ServerMessage message) {
 		session.getAsyncRemote().sendObject(message, result -> {
 			Throwable exception = result.getException();
 			if (exception != null)

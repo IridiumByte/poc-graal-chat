@@ -1,7 +1,7 @@
 package com.iridiumbyte.poc.chat.client.model;
 
-import com.iridiumbyte.poc.chat.api.ChannelType;
-import com.iridiumbyte.poc.chat.api.MessageDto;
+import com.iridiumbyte.poc.chat.api.client.ChannelType;
+import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import com.iridiumbyte.poc.chat.client.client.ChatClient;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -60,13 +60,13 @@ public class ViewModel {
 		currentRoom.set(room);
 	}
 
-	private void acceptMessage(MessageDto messageDto) {
+	private void acceptMessage(ClientMessage clientMessage) {
 		// TODO: 28.08.2021 type of message will change
 		rooms.stream()
-				.filter(room -> room.getName().equals(messageDto.target))
+				.filter(room -> room.getName().equals(clientMessage.target))
 				.findFirst()
 				.ifPresent(room -> {
-					room.getMessages().add(messageDto.content);
+					room.getMessages().add(clientMessage.content);
 					if (room.equals(currentRoom.get())) {
 						currentMessages.setAll(room.getMessages());
 					}

@@ -1,11 +1,13 @@
 package com.iridiumbyte.poc.chat.server.channel;
 
+import com.iridiumbyte.poc.chat.api.server.ChannelId;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryActiveChannelDao implements ActiveChannelDao{
 
-	private Map<Channel.Id, Channel> channels = new ConcurrentHashMap<>();
+	private Map<ChannelId, Channel> channels = new ConcurrentHashMap<>();
 
 	@Override
 	public Collection<Channel> findAll() {
@@ -13,8 +15,8 @@ public class InMemoryActiveChannelDao implements ActiveChannelDao{
 	}
 
 	@Override
-	public Optional<Channel> findById(Channel.Id id) {
-		return Optional.ofNullable(channels.get(id));
+	public Optional<Channel> findById(ChannelId channelId) {
+		return Optional.ofNullable(channels.get(channelId));
 	}
 
 	@Override

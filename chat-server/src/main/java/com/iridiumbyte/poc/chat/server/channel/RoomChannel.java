@@ -1,6 +1,7 @@
 package com.iridiumbyte.poc.chat.server.channel;
 
-import com.iridiumbyte.poc.chat.server.message.Message;
+import com.iridiumbyte.poc.chat.api.server.ChannelId;
+import com.iridiumbyte.poc.chat.api.server.ServerMessage;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,34 +16,34 @@ public class RoomChannel implements Channel {
 
 	private static final Logger log = LoggerFactory.getLogger(RoomChannel.class);
 
-	private final Channel.Id id;
+	private final ChannelId channelId;
 	private final List<ChatUser> connectedUsers;
 
-	public RoomChannel(Channel.Id channelId) {
-		this.id = channelId;
+	public RoomChannel(ChannelId channelId) {
+		this.channelId = channelId;
 		connectedUsers = Collections.synchronizedList(new ArrayList<>());
 	}
 
 	@Override
-	public Id getId() {
-		return id;
+	public ChannelId getId() {
+		return channelId;
 	}
 
 	@Override
 	public void join(ChatUser chatUser) {
 		connectedUsers.add(chatUser);
-		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " joined to room " + id.channelName, id));
+		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " joined to room " + channelId.channelName, channelId));
 	}
 
 	@Override
 	public void disconnect(ChatUser chatUser) {
 		log.debug("Disconnecting user: " + chatUser.getUsername());
 		connectedUsers.remove(chatUser);
-		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " left room " + id.channelName, id));
+		sendPublicMessage(serverMessage("User " + chatUser.getUsername() + " left room " + channelId.channelName, channelId));
 	}
 
 	@Override
-	public void sendPublicMessage(Message message) {
+	public void sendPublicMessage(ServerMessage message) {
 		connectedUsers.forEach(user -> user.sendMessage(message));
 	}
 
