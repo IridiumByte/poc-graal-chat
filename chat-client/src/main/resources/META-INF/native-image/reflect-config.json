@@ -1,10 +1,5 @@
 [
   {
-    "name" : "com.iridiumbyte.poc.chat.server.api.ServerHandshakeConfigurator",
-    "allDeclaredConstructors" : true,
-    "allPublicConstructors" : true
-  },
-  {
     "name" : "com.iridiumbyte.poc.chat.api.client.ClientMessage",
     "allPublicConstructors" : true,
     "allPublicFields": true
@@ -17,7 +12,6 @@
   {
     "name" : "com.iridiumbyte.poc.chat.api.server.ChannelId",
     "allPublicConstructors" : true,
-    "allDeclaredConstructors" : true,
     "allPublicFields": true
   }
 ]
