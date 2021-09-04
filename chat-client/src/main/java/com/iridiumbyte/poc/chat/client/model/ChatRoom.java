@@ -8,9 +8,10 @@ import java.util.Objects;
 
 public class ChatRoom {
 
-	private ChannelType type;
-	private String name;
-	private List<String> messages = new ArrayList<>();
+	private final ChannelType type;
+	private final String name;
+	private final List<String> messages = new ArrayList<>();
+	private boolean joined = false;
 
 	public ChatRoom(ChannelType type, String name) {
 		this.type = type;
@@ -27,6 +28,14 @@ public class ChatRoom {
 
 	public List<String> getMessages() {
 		return messages;
+	}
+
+	public boolean isJoined() {
+		return joined;
+	}
+
+	public void setJoined(boolean joined) {
+		this.joined = joined;
 	}
 
 	@Override

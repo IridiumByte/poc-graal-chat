@@ -34,18 +34,18 @@ public class ChatWebSocketClient extends WebSocketClient {
 
 	@Override
 	public void onOpen(ServerHandshake serverHandshake) {
-		log.info("Established connection with server");
+		log.debug("Established connection with server");
 	}
 
 	@Override
 	public void onMessage(String msg) {
-		log.info("Message: {}", msg);
+		log.debug("Message: {}", msg);
 		messageHandler.onMessage(msg);
 	}
 
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
-		log.info("Connection was closed. Reason: {}; Code: {}", reason, code);
+		log.debug("Connection was closed. Reason: {}; Code: {}", reason, code);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class ChatWebSocketClient extends WebSocketClient {
 
 	@Override
 	public void send(String text) {
-		log.info("Sending msg: {}", text);
+		log.debug("Sending msg: {}", text);
 		super.send(text);
 	}
 

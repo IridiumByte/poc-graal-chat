@@ -7,10 +7,14 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.format.DateTimeFormatter;
 
 public class ViewModel {
+
+	private static final Logger log = LoggerFactory.getLogger(ViewModel.class);
 
 	private static final ConnectionProperties CONNECTION_PROPERTIES = new ConnectionProperties(
 			"ws://localhost:8080/chat",
@@ -46,6 +50,12 @@ public class ViewModel {
 	}
 
 	public void sendMessage(ChatRoom room, String msgContent) {
+		if (!room.isJoined()) {
+			log.info("Joining room");
+			chatClient.joinRoom(room.getName());
+			room.setJoined(true);
+		}
+
 		chatClient.sendMessage(room.getType(), room.getName(), msgContent);
 	}
 
@@ -64,6 +74,7 @@ public class ViewModel {
 
 	public void setCurrentRoom(ChatRoom room) {
 		currentRoom.set(room);
+		refreshCurrentMessages(room);
 	}
 
 	private void acceptMessage(ServerMessage serverMessage) {
@@ -79,7 +90,7 @@ public class ViewModel {
 	}
 
 	private void fetchRooms() {
-		// TODO: 04.09.2021
+		rooms.setAll(chatClient.fetchRoomList());
 	}
 
 	private void refreshCurrentMessages(ChatRoom room) {

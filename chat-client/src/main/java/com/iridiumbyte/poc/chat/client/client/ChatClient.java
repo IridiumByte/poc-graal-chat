@@ -1,6 +1,7 @@
 package com.iridiumbyte.poc.chat.client.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,12 +9,21 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.iridiumbyte.poc.chat.api.client.ChannelType;
 import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import com.iridiumbyte.poc.chat.api.client.MessageType;
+import com.iridiumbyte.poc.chat.api.server.ChannelId;
 import com.iridiumbyte.poc.chat.api.server.ServerMessage;
+import com.iridiumbyte.poc.chat.client.model.ChatRoom;
 import com.iridiumbyte.poc.chat.client.socket.ChatWebSocketClient;
 import com.iridiumbyte.poc.chat.client.socket.ConnectionProperties;
 import com.iridiumbyte.poc.chat.client.socket.MessageHandler;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class ChatClient {
 
@@ -23,6 +33,7 @@ public class ChatClient {
 	private final ObjectMapper objectMapper;
 
 	private final MessageHandler messageHandler;
+	private final OkHttpClient client = new OkHttpClient();
 
 	public ChatClient(ConnectionProperties connectionProperties, MessageHandler messageHandler) {
 		this.messageHandler = messageHandler;
@@ -31,7 +42,6 @@ public class ChatClient {
 				.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 				.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
 		this.webSocketClient = ChatWebSocketClient.connect(connectionProperties, this::acceptMessage);
-		fetchRoomList();
 	}
 
 	public void sendMessage(ChannelType type, String targetRoom, String content) {
@@ -44,6 +54,25 @@ public class ChatClient {
 		webSocketClient.send(serialize(message));
 	}
 
+	public List<ChatRoom> fetchRoomList() {
+		Request request = new Request.Builder()
+				.url("http://localhost:8080/chat/channels")
+				.build();
+
+		try {
+			Response response = client.newCall(request).execute();
+			String body = response.body().string();
+			log.info(body);
+			List<ChannelId> channels = objectMapper.readValue(body, new TypeReference<>() {});
+
+			return channels.stream()
+					.map(channel -> new ChatRoom(channel.channelType, channel.channelName))
+					.collect(toList());
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 	private void acceptMessage(String message) {
 		ServerMessage serverMessage = deserialize(message, ServerMessage.class);
 		if ("SERVER".equalsIgnoreCase(serverMessage.author)) {
@@ -51,10 +80,6 @@ public class ChatClient {
 		}
 
 		messageHandler.onMessage(serverMessage);
-	}
-
-	private void fetchRoomList() {
-		// TODO: 28.08.2021
 	}
 
 	private String serialize(Object object) {
@@ -67,7 +92,6 @@ public class ChatClient {
 
 	private <T> T deserialize(String json, Class<T> clazz) {
 		try {
-			log.info("ObjectMapper: {}", objectMapper);
 			return objectMapper.readValue(json, clazz);
 		} catch (JsonProcessingException e) {
 			throw new IllegalStateException(e);
