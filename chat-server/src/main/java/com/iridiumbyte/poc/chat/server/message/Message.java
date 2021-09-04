@@ -1,28 +1,23 @@
 package com.iridiumbyte.poc.chat.server.message;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.iridiumbyte.poc.chat.server.channel.Channel;
 
 import java.time.OffsetDateTime;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
 
-	public String author;
-	public String content;
-	public Channel.Id channelId;
-	public OffsetDateTime creationTime;
-
-	public Message() { //TODO: gson to be removed
-	}
+	public final String author;
+	public final String content;
+	public final Channel.Id channelId;
+	public final OffsetDateTime creationTime;
 
 	public Message(String author, Channel.Id channelId, String content) {
 		this.author = author;
 		this.content = content;
 		this.channelId = channelId;
 		creationTime = OffsetDateTime.now();
-	}
-
-	public Channel.Id getChannelId() {
-		return channelId;
 	}
 
 }

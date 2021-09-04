@@ -23,8 +23,8 @@ public class InMemoryActiveUserDao implements ActiveUserDao {
 	}
 
 	@Override
-	public void delete(ChatUser chatUser) {
-		users.remove(chatUser.getUsername());
+	public void deleteByName(Username username) {
+		users.remove(username);
 	}
 
 }

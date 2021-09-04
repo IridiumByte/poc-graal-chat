@@ -1,12 +1,10 @@
 package com.iridiumbyte.poc.chat.server;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
 
 public class ServerHandshakeConfigurator extends ServerEndpointConfig.Configurator {
-
 
 	@Override
 	public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {

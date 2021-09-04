@@ -1,9 +1,9 @@
 package com.iridiumbyte.poc.chat.server;
 
-import com.google.gson.Gson;
 import com.iridiumbyte.poc.chat.api.MessageDto;
 import com.iridiumbyte.poc.chat.api.MessageType;
 import com.iridiumbyte.poc.chat.server.channel.InMemoryActiveChannelDao;
+import com.iridiumbyte.poc.chat.server.message.MessageDecoder;
 import com.iridiumbyte.poc.chat.server.message.MessageEncoder;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
 import com.iridiumbyte.poc.chat.server.user.ChatUser.Username;
@@ -21,7 +21,12 @@ import java.util.Map;
 import static com.iridiumbyte.poc.chat.server.message.MessageFactory.extractChannelId;
 import static com.iridiumbyte.poc.chat.server.user.SessionUtil.extractUsername;
 
-@ServerEndpoint(value = "/chat", configurator = ServerHandshakeConfigurator.class, encoders = MessageEncoder.class)
+@ServerEndpoint(
+		value = "/chat",
+		configurator = ServerHandshakeConfigurator.class,
+		encoders = MessageEncoder.class,
+		decoders = MessageDecoder.class
+)
 @ApplicationScoped
 public class ChatEndpoint {
 
@@ -31,7 +36,6 @@ public class ChatEndpoint {
 			Map.of("mk-secret", new Username("mk"), "mn-secret", new Username("mn"))
 	);
 	private final ChatServer chatServer = new ChatServer(new InMemoryActiveChannelDao(), new InMemoryActiveUserDao());
-	private final Gson gson = new Gson();
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {
@@ -44,25 +48,24 @@ public class ChatEndpoint {
 
 	@OnClose
 	public void onClose(Session session) {
-//		chatServer.leave(room, user(username, session));
+		chatServer.leave(extractUsername(session));
 	}
 
 	@OnError
 	public void onError(Session session, Throwable throwable) {
 		log.error("Some error", throwable);
-//		chatServer.leave();
+		chatServer.leave(extractUsername(session));
 	}
 
 	@OnMessage
-	public void onMessage(Session session, String message) {
-		MessageDto incoming = gson.fromJson(message, MessageDto.class);
+	public void onMessage(Session session, MessageDto message) {
 		Username username = extractUsername(session);
-		if (incoming.getMessageType() == MessageType.JOIN) {
-			log.info("Joining room: {}", incoming);
-			chatServer.join(username, extractChannelId(incoming));
+		if (message.getMessageType() == MessageType.JOIN) {
+			log.info("Joining room: {}", message);
+			chatServer.join(username, extractChannelId(message));
 		} else {
-			log.info("Sending message to room: {}", incoming);
-			chatServer.sendMessage(username, incoming);
+			log.info("Sending message to room: {}", message);
+			chatServer.sendMessage(username, message);
 		}
 	}
 

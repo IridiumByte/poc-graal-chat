@@ -18,8 +18,6 @@ public class ChatUser {
 	}
 
 	public void sendMessage(Message message) {
-//		new GsonBuilder().registerTypeAdapter(OffsetDateTime.class, )
-
 		session.getAsyncRemote().sendObject(message, result -> {
 			Throwable exception = result.getException();
 			if (exception != null)

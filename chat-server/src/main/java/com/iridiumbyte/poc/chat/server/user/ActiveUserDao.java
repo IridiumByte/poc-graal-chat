@@ -8,6 +8,6 @@ public interface ActiveUserDao {
 
 	ChatUser getByName(Username username);
 
-	void delete(ChatUser chatUser);
+	void deleteByName(Username username);
 
 }

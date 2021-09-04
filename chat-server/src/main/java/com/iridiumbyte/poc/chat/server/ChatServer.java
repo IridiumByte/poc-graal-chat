@@ -36,14 +36,15 @@ public class ChatServer {
 
 	public void sendMessage(Username username, MessageDto incoming) {
 		Message message = MessageFactory.from(incoming, username);
-		activeChannels.findById(message.getChannelId())
+		activeChannels.findById(message.channelId)
 				.orElseThrow()
 				.sendPublicMessage(message);
 	}
 
-	public void leave(ChatUser chatUser) {
-
-
+	public void leave(Username username) {
+		ChatUser user = activeUsers.getByName(username);
+		activeChannels.findAll().forEach(channel -> channel.disconnect(user));
+		activeUsers.deleteByName(username);
 	}
 
 }

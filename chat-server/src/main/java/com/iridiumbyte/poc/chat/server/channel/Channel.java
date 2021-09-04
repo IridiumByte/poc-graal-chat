@@ -1,5 +1,7 @@
 package com.iridiumbyte.poc.chat.server.channel;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iridiumbyte.poc.chat.api.ChannelType;
 import com.iridiumbyte.poc.chat.server.message.Message;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
@@ -18,7 +20,8 @@ public interface Channel {
 		public final String channelName;
 		public final ChannelType channelType;
 
-		public Id(String channelName, ChannelType channelType) {
+		@JsonCreator
+		public Id(@JsonProperty("channelName") String channelName, @JsonProperty("channelType") ChannelType channelType) {
 			this.channelName = channelName;
 			this.channelType = channelType;
 		}
