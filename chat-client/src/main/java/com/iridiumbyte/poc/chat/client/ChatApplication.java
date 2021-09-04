@@ -35,7 +35,6 @@ public class ChatApplication extends Application {
 		buildAndShowUI(stage);
 		viewModel.connect();
 		roomSelector.setItems(viewModel.getRooms());
-		viewModel.getRooms().addListener((ListChangeListener<ChatRoom>) c -> System.out.println("rooms changed"));
 	}
 
 	private void buildAndShowUI(Stage stage) {
