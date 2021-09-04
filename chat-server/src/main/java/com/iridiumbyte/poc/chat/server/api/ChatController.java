@@ -5,6 +5,7 @@ import com.iridiumbyte.poc.chat.server.ChatServer;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.Collection;
 
 @Path("/chat/channels")
@@ -17,6 +18,7 @@ public class ChatController {
 	}
 
 	@GET
+	@Produces(value = "application/json")
 	public Collection<ChannelId> getAvailableChannels() {
 		return chatServer.listPublicChannels();
 	}
