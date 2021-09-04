@@ -42,4 +42,13 @@ public class ChatRoom {
 		return Objects.hash(type, name);
 	}
 
+	@Override
+	public String toString() {
+		return "ChatRoom{" +
+				"type=" + type +
+				", name='" + name + '\'' +
+				", messages=" + messages +
+				'}';
+	}
+
 }

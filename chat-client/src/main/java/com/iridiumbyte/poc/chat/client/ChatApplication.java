@@ -11,17 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.util.Optional;
 
-import static java.util.stream.Collectors.joining;
-
 public class ChatApplication extends Application {
 
-	private ViewModel viewModel;
+	private final ViewModel viewModel = new ViewModel();
 
 	private TextArea chatArea;
 	private TextField messageField;
@@ -34,12 +33,9 @@ public class ChatApplication extends Application {
 	@Override
 	public void start(Stage stage) {
 		buildAndShowUI(stage);
-		viewModel = new ViewModel();
+		viewModel.connect();
 		roomSelector.setItems(viewModel.getRooms());
-		viewModel.getCurrentMessages().addListener((ListChangeListener<String>) newList -> {
-			String messages = String.join("\n", newList.getList());
-			chatArea.setText(messages);
-		});
+		viewModel.getRooms().addListener((ListChangeListener<ChatRoom>) c -> System.out.println("rooms changed"));
 	}
 
 	private void buildAndShowUI(Stage stage) {
@@ -71,6 +67,10 @@ public class ChatApplication extends Application {
 	private void setupChatTextArea(GridPane grid) {
 		chatArea = new TextArea();
 		grid.add(chatArea, 0, 0);
+		viewModel.getCurrentMessages().addListener((ListChangeListener<String>) change -> {
+			String messages = String.join("\n", change.getList());
+			chatArea.setText(messages);
+		});
 		chatArea.setEditable(false);
 	}
 
@@ -107,13 +107,27 @@ public class ChatApplication extends Application {
 
 			}
 		});
-		roomSelector.setOnAction(actionEvent -> {
+
+		viewModel.getCurrentRoom()
+				.addListener((observable, oldValue, newValue) -> roomSelector.getSelectionModel().select(newValue));
+
+		roomSelector.setOnKeyPressed(event -> {
+			if (event.getCode() != KeyCode.ENTER) {
+				return;
+			}
+
+			ChatRoom chatRoom = roomSelector.getConverter().fromString(roomSelector.getEditor().getText());
+			viewModel.joinRoom(chatRoom);
+
 			if (roomSelector.getSelectionModel().getSelectedIndex() == -1) {
 				viewModel.createNewRoom(roomSelector.getSelectionModel().getSelectedItem());
 			} else {
 				viewModel.setCurrentRoom(roomSelector.getSelectionModel().getSelectedItem());
 			}
 		});
+
+		roomSelector.getSelectionModel().selectedItemProperty()
+				.addListener((observable, oldValue, newValue) -> viewModel.setCurrentRoom(newValue));
 	}
 
 }
