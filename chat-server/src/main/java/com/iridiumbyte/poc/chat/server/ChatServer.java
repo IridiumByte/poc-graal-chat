@@ -11,7 +11,6 @@ import com.iridiumbyte.poc.chat.server.user.ActiveUserDao;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
 import com.iridiumbyte.poc.chat.server.user.ChatUser.Username;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.Collection;
 
 import static com.iridiumbyte.poc.chat.server.message.MessageFactory.serverMessage;
