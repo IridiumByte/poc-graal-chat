@@ -1,7 +1,5 @@
 package com.iridiumbyte.poc.chat.client.socket;
 
-import com.iridiumbyte.poc.chat.api.client.ChannelType;
-import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
@@ -9,23 +7,24 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.Random;
 
 public class ChatWebSocketClient extends WebSocketClient {
 
 	private static final Logger log = LoggerFactory.getLogger(ChatWebSocketClient.class);
 
-	private final MessageHandler messageHandler;
-	private Random random = new Random(); // TODO: 28.08.2021 remove
+	private final WebSocketMessageHandler messageHandler;
 
-	private ChatWebSocketClient(String uri, MessageHandler messageHandler) {
-		super(URI.create(uri), Map.of("X-Auth", "mn-secret")); // TODO: 28.08.2021
+	private ChatWebSocketClient(ConnectionProperties connectionProperties, WebSocketMessageHandler messageHandler) {
+		super(
+				URI.create(connectionProperties.url),
+				Map.of("X-Auth", connectionProperties.secret)
+		);
 		this.messageHandler = messageHandler;
 	}
 
-	public static ChatWebSocketClient connect(String uri, MessageHandler messageHandler) {
+	public static ChatWebSocketClient connect(ConnectionProperties connectionProperties, WebSocketMessageHandler messageHandler) {
 		try {
-			ChatWebSocketClient client = new ChatWebSocketClient(uri, messageHandler);
+			ChatWebSocketClient client = new ChatWebSocketClient(connectionProperties, messageHandler);
 			client.connectBlocking();
 			return client;
 		} catch (Exception e) {
@@ -40,8 +39,8 @@ public class ChatWebSocketClient extends WebSocketClient {
 
 	@Override
 	public void onMessage(String msg) {
-		// TODO: 28.08.2021 deserialize
-		messageHandler.onMessage(new ClientMessage(ChannelType.ROOM, null, "Room A", msg));
+		log.info("Message: {}", msg);
+		messageHandler.onMessage(msg);
 	}
 
 	@Override
@@ -52,6 +51,16 @@ public class ChatWebSocketClient extends WebSocketClient {
 	@Override
 	public void onError(Exception e) {
 		log.error("Error occurred", e);
+	}
+
+	@Override
+	public void send(String text) {
+		log.info("Sending msg: {}", text);
+		super.send(text);
+	}
+
+	public interface WebSocketMessageHandler {
+		void onMessage(String msg);
 	}
 
 }

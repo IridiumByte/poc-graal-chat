@@ -1,16 +1,22 @@
 package com.iridiumbyte.poc.chat.client.model;
 
-import com.iridiumbyte.poc.chat.api.client.ChannelType;
-import com.iridiumbyte.poc.chat.api.client.ClientMessage;
+import com.iridiumbyte.poc.chat.api.server.ServerMessage;
 import com.iridiumbyte.poc.chat.client.client.ChatClient;
+import com.iridiumbyte.poc.chat.client.socket.ConnectionProperties;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class ViewModel {
+
+	private static final ConnectionProperties CONNECTION_PROPERTIES = new ConnectionProperties(
+			"ws://localhost:8080/chat",
+			"mn-secret"
+	);
+	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 	private final ObservableList<String> currentMessages = FXCollections.observableArrayList();
 	private final ObservableList<ChatRoom> rooms = FXCollections.observableArrayList();
@@ -18,8 +24,8 @@ public class ViewModel {
 	private ChatClient chatClient;
 
 	public void connect() {
-		chatClient = new ChatClient("ws://localhost:8080/chat", this::acceptMessage);
-		currentRoom.addListener((observable, oldValue, newValue) -> currentMessages.setAll(newValue.getMessages()));
+		chatClient = new ChatClient(CONNECTION_PROPERTIES, this::acceptMessage);
+		currentRoom.addListener((observable, oldValue, newValue) -> refreshCurrentMessages(newValue));
 		fetchRooms();
 
 		if (!rooms.isEmpty()) {
@@ -60,36 +66,33 @@ public class ViewModel {
 		currentRoom.set(room);
 	}
 
-	private void acceptMessage(ClientMessage clientMessage) {
-		// TODO: 28.08.2021 type of message will change
+	private void acceptMessage(ServerMessage serverMessage) {
 		rooms.stream()
-				.filter(room -> room.getName().equals(clientMessage.target))
+				.filter(room -> room.getName().equals(serverMessage.channelId.channelName))
 				.findFirst()
 				.ifPresent(room -> {
-					room.getMessages().add(clientMessage.content);
+					room.getMessages().add(formatMessage(serverMessage));
 					if (room.equals(currentRoom.get())) {
-						currentMessages.setAll(room.getMessages());
+						refreshCurrentMessages(room);
 					}
 				});
 	}
 
 	private void fetchRooms() {
-		rooms.add(new ChatRoom(ChannelType.ROOM, "Room A"));
-		rooms.add(new ChatRoom(ChannelType.ROOM, "Room B"));
+		// TODO: 04.09.2021
+	}
 
-		rooms.get(0).getMessages().addAll(
-				List.of(
-						"Room A: 1",
-						"Room A: 2",
-						"Room A: 3"
-				)
-		);
-		rooms.get(1).getMessages().addAll(
-				List.of(
-						"Room B: 1",
-						"Room B: 2",
-						"Room B: 3"
-				)
+	private void refreshCurrentMessages(ChatRoom room) {
+		currentMessages.setAll(room.getMessages());
+	}
+
+	private String formatMessage(ServerMessage msg) {
+		System.out.println(msg.creationTime);
+		return String.format(
+				"[%s] %s: %s",
+				msg.creationTime.format(DATE_TIME_FORMATTER),
+				msg.author,
+				msg.content
 		);
 	}
 

@@ -1,6 +1,8 @@
 package com.iridiumbyte.poc.chat.api.server;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
@@ -12,7 +14,11 @@ public class ServerMessage {
 	public final ChannelId channelId;
 	public final OffsetDateTime creationTime;
 
-	public ServerMessage(String author, ChannelId channelId, String content) {
+	@JsonCreator
+	public ServerMessage(
+			@JsonProperty("author") String author,
+			@JsonProperty("channelId") ChannelId channelId,
+			@JsonProperty("content") String content) {
 		this.author = author;
 		this.content = content;
 		this.channelId = channelId;
