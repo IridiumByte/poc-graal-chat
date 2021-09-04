@@ -6,22 +6,21 @@ import com.iridiumbyte.poc.chat.server.user.ChatUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.iridiumbyte.poc.chat.server.message.MessageFactory.serverMessage;
+import static java.util.Collections.synchronizedSet;
 
 public class RoomChannel implements Channel {
 
 	private static final Logger log = LoggerFactory.getLogger(RoomChannel.class);
 
 	private final ChannelId channelId;
-	private final List<ChatUser> connectedUsers;
+	private final Set<ChatUser> connectedUsers;
 
 	public RoomChannel(ChannelId channelId) {
 		this.channelId = channelId;
-		connectedUsers = Collections.synchronizedList(new ArrayList<>());
+		connectedUsers = synchronizedSet(new HashSet<>());
 	}
 
 	@Override

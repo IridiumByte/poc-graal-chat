@@ -29,6 +29,21 @@ public class ChatUser {
 		return username;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		ChatUser chatUser = (ChatUser) o;
+		return username.equals(chatUser.username);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(username);
+	}
+
 	public static class Username {
 
 		private final String value;
