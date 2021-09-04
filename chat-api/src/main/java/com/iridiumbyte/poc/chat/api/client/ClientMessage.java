@@ -2,13 +2,10 @@ package com.iridiumbyte.poc.chat.api.client;
 
 public class ClientMessage {
 
-	public ChannelType channelType;
-	public MessageType messageType;
-	public String target;
-	public String content;
-
-	public ClientMessage() { //TODO: gson to be removed
-	}
+	public final ChannelType channelType;
+	public final MessageType messageType;
+	public final String target;
+	public final String content;
 
 	public ClientMessage(ChannelType channelType, MessageType messageType, String target, String content) {
 		this.channelType = channelType;
