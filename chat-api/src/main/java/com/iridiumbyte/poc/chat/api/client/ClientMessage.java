@@ -1,5 +1,8 @@
 package com.iridiumbyte.poc.chat.api.client;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ClientMessage {
 
 	public final ChannelType channelType;
@@ -7,7 +10,12 @@ public class ClientMessage {
 	public final String target;
 	public final String content;
 
-	public ClientMessage(ChannelType channelType, MessageType messageType, String target, String content) {
+	@JsonCreator
+	public ClientMessage(
+			@JsonProperty("channelType") ChannelType channelType,
+			@JsonProperty("messageType") MessageType messageType,
+			@JsonProperty("target") String target,
+			@JsonProperty("content") String content) {
 		this.channelType = channelType;
 		this.messageType = messageType;
 		this.target = target;
@@ -32,7 +40,7 @@ public class ClientMessage {
 
 	@Override
 	public String toString() {
-		return "MessageDto{" +
+		return "ClientMessage{" +
 				"channelType=" + channelType +
 				", messageType=" + messageType +
 				", target='" + target + '\'' +
