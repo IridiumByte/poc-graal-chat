@@ -78,6 +78,10 @@ public class ChatApplication extends Application {
 		grid.add(messageField, 0, 1);
 		messageField.setOnAction(actionEvent -> {
 			String msgContent = messageField.getText();
+			if (msgContent.isBlank()) {
+				return;
+			}
+
 			viewModel.sendMessage(roomSelector.getSelectionModel().getSelectedItem(), msgContent);
 			messageField.setText("");
 		});
@@ -117,12 +121,6 @@ public class ChatApplication extends Application {
 
 			ChatRoom chatRoom = roomSelector.getConverter().fromString(roomSelector.getEditor().getText());
 			viewModel.joinRoom(chatRoom);
-
-			if (roomSelector.getSelectionModel().getSelectedIndex() == -1) {
-				viewModel.createNewRoom(roomSelector.getSelectionModel().getSelectedItem());
-			} else {
-				viewModel.setCurrentRoom(roomSelector.getSelectionModel().getSelectedItem());
-			}
 		});
 
 		roomSelector.getSelectionModel().selectedItemProperty()

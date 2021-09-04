@@ -68,6 +68,7 @@ public class ViewModel {
 
 	public void createNewRoom(ChatRoom room) {
 		chatClient.joinRoom(room.getName());
+		room.setJoined(true);
 		rooms.add(room);
 		currentRoom.set(room);
 	}
@@ -98,7 +99,6 @@ public class ViewModel {
 	}
 
 	private String formatMessage(ServerMessage msg) {
-		System.out.println(msg.creationTime);
 		return String.format(
 				"[%s] %s: %s",
 				msg.creationTime.format(DATE_TIME_FORMATTER),

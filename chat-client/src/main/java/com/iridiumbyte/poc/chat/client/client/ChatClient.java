@@ -62,7 +62,6 @@ public class ChatClient {
 		try {
 			Response response = client.newCall(request).execute();
 			String body = response.body().string();
-			log.info(body);
 			List<ChannelId> channels = objectMapper.readValue(body, new TypeReference<>() {});
 
 			return channels.stream()
