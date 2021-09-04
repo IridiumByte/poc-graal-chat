@@ -1,4 +1,4 @@
-package com.iridiumbyte.poc.chat.server;
+package com.iridiumbyte.poc.chat.server.api;
 
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;

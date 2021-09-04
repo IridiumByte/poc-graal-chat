@@ -26,4 +26,9 @@ public class DirectMessageChannel implements Channel {
 
 	}
 
+	@Override
+	public boolean isPublic() {
+		return false;
+	}
+
 }

@@ -43,6 +43,11 @@ public class RoomChannel implements Channel {
 	}
 
 	@Override
+	public boolean isPublic() {
+		return true;
+	}
+
+	@Override
 	public void sendPublicMessage(ServerMessage message) {
 		connectedUsers.forEach(user -> user.sendMessage(message));
 	}

@@ -1,6 +1,6 @@
 [
   {
-    "name" : "com.iridiumbyte.poc.chat.server.ServerHandshakeConfigurator",
+    "name" : "com.iridiumbyte.poc.chat.server.api.ServerHandshakeConfigurator",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true
   },

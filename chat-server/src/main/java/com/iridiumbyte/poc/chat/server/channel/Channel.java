@@ -10,6 +10,7 @@ public interface Channel {
 	void join(ChatUser chatUser);
 	void sendPublicMessage(ServerMessage message);
 	void disconnect(ChatUser chatUser);
+	boolean isPublic();
 
 
 

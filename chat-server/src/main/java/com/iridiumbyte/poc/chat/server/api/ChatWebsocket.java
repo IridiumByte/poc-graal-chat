@@ -1,7 +1,8 @@
-package com.iridiumbyte.poc.chat.server;
+package com.iridiumbyte.poc.chat.server.api;
 
 import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import com.iridiumbyte.poc.chat.api.client.MessageType;
+import com.iridiumbyte.poc.chat.server.ChatServer;
 import com.iridiumbyte.poc.chat.server.channel.InMemoryActiveChannelDao;
 import com.iridiumbyte.poc.chat.server.message.MessageDecoder;
 import com.iridiumbyte.poc.chat.server.message.MessageEncoder;
@@ -28,14 +29,19 @@ import static com.iridiumbyte.poc.chat.server.user.SessionUtil.extractUsername;
 		decoders = MessageDecoder.class
 )
 @ApplicationScoped
-public class ChatEndpoint {
+public class ChatWebsocket {
 
-	private static final Logger log = LoggerFactory.getLogger(ChatEndpoint.class);
+	private static final Logger log = LoggerFactory.getLogger(ChatWebsocket.class);
 
 	private final SecretManager secretManager = new SecretManager(
 			Map.of("mk-secret", new Username("mk"), "mn-secret", new Username("mn"))
 	);
-	private final ChatServer chatServer = new ChatServer(new InMemoryActiveChannelDao(), new InMemoryActiveUserDao());
+
+	private final ChatServer chatServer;
+
+	public ChatWebsocket(ChatServer chatServer) {
+		this.chatServer = chatServer;
+	}
 
 	@OnOpen
 	public void onOpen(Session session, EndpointConfig config) {

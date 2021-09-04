@@ -2,15 +2,20 @@ package com.iridiumbyte.poc.chat.server;
 
 import com.iridiumbyte.poc.chat.api.client.ClientMessage;
 import com.iridiumbyte.poc.chat.api.server.ChannelId;
-import com.iridiumbyte.poc.chat.server.channel.ActiveChannelDao;
-import com.iridiumbyte.poc.chat.server.channel.ChannelFactory;
 import com.iridiumbyte.poc.chat.api.server.ServerMessage;
+import com.iridiumbyte.poc.chat.server.channel.ActiveChannelDao;
+import com.iridiumbyte.poc.chat.server.channel.Channel;
+import com.iridiumbyte.poc.chat.server.channel.ChannelFactory;
 import com.iridiumbyte.poc.chat.server.message.MessageFactory;
 import com.iridiumbyte.poc.chat.server.user.ActiveUserDao;
 import com.iridiumbyte.poc.chat.server.user.ChatUser;
 import com.iridiumbyte.poc.chat.server.user.ChatUser.Username;
 
+import javax.enterprise.context.ApplicationScoped;
+import java.util.Collection;
+
 import static com.iridiumbyte.poc.chat.server.message.MessageFactory.serverMessage;
+import static java.util.stream.Collectors.toList;
 
 public class ChatServer {
 
@@ -45,6 +50,13 @@ public class ChatServer {
 		ChatUser user = activeUsers.getByName(username);
 		activeChannels.findAll().forEach(channel -> channel.disconnect(user));
 		activeUsers.deleteByName(username);
+	}
+
+	public Collection<ChannelId> listPublicChannels() {
+		return activeChannels.findAll().stream()
+				.filter(Channel::isPublic)
+				.map(Channel::getId)
+				.collect(toList());
 	}
 
 }
